@@ -31,8 +31,19 @@
 	self.tabBar.clipsToBounds = hideShadow;
 }
 
-- (void)rnn_setTabBarVisible:(BOOL)visible {
-	self.tabBar.hidden = !visible;
+- (void)rnn_setTabBarVisible:(BOOL)visible animated:(BOOL)animated {
+    CGRect nextFrame = self.tabBar.frame;
+    nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (visible ? self.tabBar.frame.size.height : 0);
+    
+    [UIView animateWithDuration: (animated ? 0.15 : 0)
+                          delay: 0
+                        options: (visible ? UIViewAnimationOptionCurveEaseOut : UIViewAnimationOptionCurveEaseIn)
+                     animations:^()
+     {
+         [self.tabBar setFrame:nextFrame];
+     }
+                     completion:^(BOOL finished)
+     {}];
 }
 
 @end
