@@ -12,8 +12,9 @@ import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -126,12 +127,16 @@ public class Navigator extends ParentController {
 
     public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
-        if (isRootNotCreated()) {
-            removePreviousContentView();
-            getView();
-        }
+        final boolean removeSplashView = isRootNotCreated();
+        if (isRootNotCreated()) getView();
         root = viewController;
-        rootPresenter.setRoot(root, defaultOptions, commandListener);
+        rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
+            @Override
+            public void onSuccess(String childId) {
+                if (removeSplashView) removePreviousContentView();
+                super.onSuccess(childId);
+            }
+        });
     }
 
     private void removePreviousContentView() {
@@ -207,7 +212,7 @@ public class Navigator extends ParentController {
         return controllerById;
     }
 
-    private void applyOnStack(String fromId, CommandListener listener, Task<StackController> task) {
+    private void applyOnStack(String fromId, CommandListener listener, Func1<StackController> task) {
         ViewController from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {

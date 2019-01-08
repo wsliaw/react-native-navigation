@@ -8,7 +8,7 @@ const Button = require('./Button');
 const { Navigation } = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
-  static get options() {
+  static options() {
     return {
       _statusBar: {
         backgroundColor: 'transparent',
@@ -277,6 +277,9 @@ class WelcomeScreen extends Component {
       component: {
         name: 'navigation.playground.PushedScreen',
         options: {
+          layout: {
+            
+          },
           topBar: {
             title: {
               text: 'pushed',
@@ -583,12 +586,10 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e8e8e8',
   },
   bar: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#e8e8e8',
     justifyContent: 'space-between'
   },
   h1: {
