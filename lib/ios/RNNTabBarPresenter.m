@@ -54,8 +54,12 @@
 		[tabBarController rnn_setTabBarHideShadow:newOptions.bottomTabs.hideShadow.get];
 	}
 	
-	if (newOptions.bottomTabs.visible.hasValue && newOptions.bottomTabs.animate.hasValue) {
-		[tabBarController rnn_setTabBarVisible:newOptions.bottomTabs.visible.get animated:[newOptions.bottomTabs.animate getWithDefaultValue:NO]];
+	if (newOptions.bottomTabs.visible.hasValue) {
+		if (newOptions.bottomTabs.animate.hasValue) {
+			[tabBarController rnn_setTabBarVisible:newOptions.bottomTabs.visible.get animated:[newOptions.bottomTabs.animate getWithDefaultValue:NO]];
+		} else {
+			[tabBarController rnn_setTabBarVisible:newOptions.bottomTabs.visible.get animated:NO];
+		}
 	}
 }
 
